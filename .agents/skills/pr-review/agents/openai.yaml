@@ -1,0 +1,7 @@
+name: pr-review
+description: Specialist for final review before commit or handoff.
+invocation:
+  policy: explicit
+tools:
+  - type: file_read
+  - type: shell

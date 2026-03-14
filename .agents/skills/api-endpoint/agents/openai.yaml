@@ -1,0 +1,9 @@
+name: api-endpoint
+description: Specialist for server routes, server actions, and validation-first mutations.
+invocation:
+  policy: implicit
+tools:
+  - type: file_read
+  - type: file_write
+  - type: shell
+

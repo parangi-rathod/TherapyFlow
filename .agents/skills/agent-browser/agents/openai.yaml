@@ -1,0 +1,9 @@
+name: agent-browser
+description: Specialist for Playwright-based UI verification and E2E automation.
+invocation:
+  policy: implicit
+tools:
+  - type: file_read
+  - type: file_write
+  - type: shell
+
