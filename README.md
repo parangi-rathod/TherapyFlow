@@ -1,6 +1,6 @@
 # TherapyFlow
 
-TherapyFlow is an AI-first practice management platform for therapists and mental health clinics. This repository currently contains the MVP foundation, hosted Supabase integration, authentication, practice bootstrap, client management, and appointment scheduling.
+TherapyFlow is an AI-first practice management platform for therapists and mental health clinics. This repository currently contains the MVP foundation, hosted Supabase integration, authentication, practice bootstrap, client management, appointment scheduling, treatment planning, session notes, document management, reminders, billing, and intake forms.
 
 ## Current MVP Status
 
@@ -11,6 +11,17 @@ TherapyFlow is an AI-first practice management platform for therapists and menta
 - First-workspace bootstrap for new therapists
 - Client management CRUD under `/dashboard/clients`
 - Appointment scheduling CRUD under `/dashboard/appointments`
+- Treatment planning under `/dashboard/treatment-plans`
+- Session note CRUD under `/dashboard/notes`
+- Secure document management under `/dashboard/documents`
+- Appointment reminders under `/dashboard/reminders`
+- Provider-backed reminder email delivery via Resend and secured processing API
+- Secure therapist-client messaging under `/dashboard/messages`
+- Time tracking under `/dashboard/time-tracking`
+- Staff management under `/dashboard/staff`
+- Billing and payment tracking under `/dashboard/billing`
+- Intake form creation and review under `/dashboard/intake-forms`
+- Public client intake completion under `/intake/[token]`
 
 ## Tech Stack
 
@@ -44,9 +55,21 @@ Create `.env.local` with:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=
+RESEND_REPLY_TO_EMAIL=
+REMINDER_PROCESSING_SECRET=
+MESSAGE_ENCRYPTION_KEY=
 ```
 
-`.env.example` contains the same keys without values.
+Reminder delivery notes:
+
+- `RESEND_API_KEY` and `RESEND_FROM_EMAIL` are required for outbound email delivery.
+- `SUPABASE_SERVICE_ROLE_KEY` and `REMINDER_PROCESSING_SECRET` are required for the secured `/api/reminders/process` endpoint.
+- `MESSAGE_ENCRYPTION_KEY` is required for encrypted secure message storage.
+- Appointment create and update flows now send confirmation/update emails when reminder email config is present.
+- Queued reminder emails can be processed from `/dashboard/reminders` or by calling the secured API route from a cron job.
 
 ## Verification Commands
 
@@ -64,4 +87,4 @@ corepack pnpm typecheck
 
 ## Next Feature Lane
 
-- Session note creation and viewing flows
+- Secure therapist-client messaging flows

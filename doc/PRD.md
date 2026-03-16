@@ -135,3 +135,34 @@ For the hackathon the MVP should include:
 - Appointment booking rate
 - Feature adoption
 - AI feature usage
+
+## Extended Feature Roadmap
+
+The following features extend the product beyond the current core MVP backlog. Priority and complexity are tracked to guide sequencing after the initial hackathon foundation.
+
+| # | Feature | Description | Priority | Complexity |
+|---|---|---|---|---|
+| 8 | Document Management | Upload, store, and organize client documents, assessments, and forms. | must-have | low |
+| 9 | Automated Reminders | Email and SMS appointment reminders with customizable timing and messaging. | important | low |
+| 10 | Treatment Planning | Create and manage treatment goals, interventions, and progress tracking. | must-have | medium |
+| 11 | Multi-User Access | Role-based access control for practices with multiple therapists and administrative staff. | important | medium |
+| 12 | Financial Reporting | Revenue reports, outstanding balances, and financial analytics dashboard. | important | medium |
+| 13 | Intake Forms | Customizable digital intake forms that clients can complete before their first session. | must-have | medium |
+| 14 | Calendar Integration | Sync with Google Calendar, Outlook, and other calendar applications. | important | low |
+| 15 | Payment Processing | Integrated credit card and ACH payment processing with PCI compliance. | must-have | high |
+| 16 | Backup & Data Export | Automated backups and the ability to export client data in standard formats. | must-have | medium |
+| 17 | Group Session Management | Schedule and manage group therapy sessions with multiple participants. | important | medium |
+| 18 | Waitlist Management | Manage waiting lists and automatically fill cancelled appointment slots. | nice-to-have | low |
+| 19 | Time Tracking | Track billable hours and session durations for accurate billing. | must-have | low |
+| 20 | Outcome Measurement Tools | Built-in assessments and questionnaires to track client progress. | important | medium |
+| 21 | Secure Messaging | HIPAA-compliant messaging system between therapists and clients. | important | medium |
+| 22 | Mobile Application | Mobile app for therapists to access schedules, notes, and client information on the go. | important | high |
+| 23 | Audit Trail | Complete log of all system access and data modifications for compliance. | must-have | medium |
+
+## Roadmap Sequencing Guidance
+
+Recommended rollout order after the current implemented modules:
+- Must-have operational workflows: document management, intake forms, payment processing, treatment planning, time tracking, audit trail, backup and export.
+- Practice operations and collaboration: automated reminders, multi-user access, financial reporting, secure messaging.
+- Scheduling and retention enhancements: calendar integration, group sessions, waitlist management.
+- Clinical analytics and reach: outcome measurement tools and mobile application.

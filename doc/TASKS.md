@@ -35,23 +35,45 @@ Current phase: Phase 2 - Core MVP features
 
 - [x] 2026-03-14 11:45 Build client management CRUD flows.
 - [x] 2026-03-14 12:06 Build appointment scheduling UI and supporting data model.
-- [ ] Build session note creation and viewing flows.
-- [ ] Build secure document upload and listing flows.
-- [ ] Build basic billing and payment tracking flows.
-- [ ] Build secure therapist-client messaging flows.
+- [x] 2026-03-14 12:39 Build session note creation and viewing flows.
+- [x] 2026-03-14 14:01 Build secure document upload and listing flows. `must-have` `low`
+- [x] 2026-03-14 15:02 Build automated email and SMS appointment reminders with configurable timing and messaging. `important` `low`
+- [x] 2026-03-14 16:05 Build treatment planning with goals, interventions, and progress tracking. `must-have` `medium`
+- [x] 2026-03-14 16:17 Build basic billing and payment tracking flows. `must-have` `medium`
+- [x] 2026-03-14 16:39 Build intake form creation, client completion, and submission review flows. `must-have` `medium`
+- [x] 2026-03-14 17:55 Build secure therapist-client messaging flows. `important` `medium`
+- [x] 2026-03-14 18:20 Build time tracking tied to sessions and billable work. `must-have` `low`
 
-### Phase 3 - Quality gates
+### Phase 3 - Practice operations and reporting
+
+- [x] 2026-03-14 18:55 Build multi-user practice access with role-based staff management. `important` `medium`
+- [ ] Build financial reporting dashboards for revenue, balances, and analytics. `important` `medium`
+- [ ] Build calendar integration for Google Calendar, Outlook, and external calendar sync. `important` `low`
+- [ ] Build payment processing for card and ACH with compliance-aware flow boundaries. `must-have` `high`
+- [ ] Build backup and data export workflows for client data portability. `must-have` `medium`
+- [ ] Build audit trail logging for system access and critical data changes. `must-have` `medium`
+
+### Phase 4 - Scheduling and care program extensions
+
+- [ ] Build group session scheduling and participant management. `important` `medium`
+- [ ] Build waitlist management with cancelled-slot fill workflow. `nice-to-have` `low`
+- [ ] Build outcome measurement tools with assessments and progress tracking. `important` `medium`
+
+### Phase 5 - Quality gates
 
 - [ ] Configure Vitest and add initial coverage for validations, utilities, and server-side logic.
 - [ ] Configure Playwright and add baseline E2E coverage for auth and the first critical journey.
 - [ ] Add pre-commit quality commands for lint, typecheck, and tests.
 
-### Phase 4 - AI features and hardening
+### Phase 6 - AI features and hardening
 
 - [ ] Define the first AI-assisted session note workflow.
 - [ ] Define the AI transcription ingestion path.
+- [ ] Build the first predictive no-show detection workflow. `important` `medium`
+- [ ] Define risk detection review and escalation workflow for notes and transcripts. `important` `medium`
+- [ ] Build the first mobile application delivery plan and scope boundary. `important` `high`
 - [ ] Document no-show prediction and risk detection as post-MVP or stretch work unless hackathon scope changes.
 
 ## Next unfinished task
 
-- Build session note creation and viewing flows.
+- Build financial reporting dashboards for revenue, balances, and analytics.

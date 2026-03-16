@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import { syncAppointmentReminders } from "@/app/actions/reminders";
+import { sendAppointmentNotificationEmail } from "@/lib/reminders/delivery";
 import { getCurrentPracticeContext } from "@/lib/supabase/practice-context";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import {
@@ -20,6 +22,13 @@ function normalizeOptionalString(value?: string) {
   const trimmed = value?.trim();
   return trimmed ? trimmed : null;
 }
+
+type ClientNotificationRow = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string | null;
+};
 
 async function getUserAndPractice() {
   const supabase = await createServerSupabaseClient();
@@ -40,6 +49,25 @@ async function getUserAndPractice() {
   return { supabase, user, practice };
 }
 
+async function getClientForPractice(
+  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
+  clientId: string,
+  practiceId: string,
+) {
+  const { data: client, error } = await supabase
+    .from("clients")
+    .select("id, first_name, last_name, email")
+    .eq("id", clientId)
+    .eq("practice_id", practiceId)
+    .maybeSingle<ClientNotificationRow>();
+
+  if (error || !client) {
+    throw new Error("The selected client could not be found.");
+  }
+
+  return client;
+}
+
 export async function createAppointmentAction(
   input: AppointmentSchemaInput,
 ): Promise<ActionResult> {
@@ -54,6 +82,11 @@ export async function createAppointmentAction(
 
   try {
     const { supabase, user, practice } = await getUserAndPractice();
+    const client = await getClientForPractice(
+      supabase,
+      parsed.data.clientId,
+      practice.id,
+    );
     const { error } = await supabase.from("appointments").insert({
       practice_id: practice.id,
       client_id: parsed.data.clientId,
@@ -72,6 +105,25 @@ export async function createAppointmentAction(
         success: false,
         error: error.message ?? "Unable to create the appointment.",
       };
+    }
+
+    if (client.email?.trim()) {
+      try {
+        await sendAppointmentNotificationEmail({
+          to: client.email.trim(),
+          practiceName: practice.name,
+          clientName: `${client.first_name} ${client.last_name}`.trim(),
+          startsAt: new Date(parsed.data.startsAt).toISOString(),
+          timezone: parsed.data.timezone,
+          locationType: parsed.data.locationType,
+          locationDetails: normalizeOptionalString(parsed.data.locationDetails),
+          meetingUrl: normalizeOptionalString(parsed.data.meetingUrl),
+          status: parsed.data.status,
+          idempotencyKey: `appointment-created/${practice.id}/${client.id}/${new Date(parsed.data.startsAt).toISOString()}/${parsed.data.status}`,
+        });
+      } catch {
+        // Appointment creation should still succeed if the notification provider fails.
+      }
     }
 
     revalidatePath("/dashboard");
@@ -105,6 +157,11 @@ export async function updateAppointmentAction(
 
   try {
     const { supabase, user, practice } = await getUserAndPractice();
+    const client = await getClientForPractice(
+      supabase,
+      parsed.data.clientId,
+      practice.id,
+    );
     const { error } = await supabase
       .from("appointments")
       .update({
@@ -128,8 +185,30 @@ export async function updateAppointmentAction(
       };
     }
 
+    await syncAppointmentReminders(supabase, parsed.data.id, practice.id);
+
+    if (client.email?.trim()) {
+      try {
+        await sendAppointmentNotificationEmail({
+          to: client.email.trim(),
+          practiceName: practice.name,
+          clientName: `${client.first_name} ${client.last_name}`.trim(),
+          startsAt: new Date(parsed.data.startsAt).toISOString(),
+          timezone: parsed.data.timezone,
+          locationType: parsed.data.locationType,
+          locationDetails: normalizeOptionalString(parsed.data.locationDetails),
+          meetingUrl: normalizeOptionalString(parsed.data.meetingUrl),
+          status: parsed.data.status,
+          idempotencyKey: `appointment-updated/${parsed.data.id}/${new Date(parsed.data.startsAt).toISOString()}/${parsed.data.status}`,
+        });
+      } catch {
+        // Appointment updates should still persist if the notification provider fails.
+      }
+    }
+
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/appointments");
+    revalidatePath("/dashboard/reminders");
 
     return {
       success: true,
@@ -170,6 +249,7 @@ export async function deleteAppointmentAction(id: string): Promise<ActionResult>
 
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/appointments");
+    revalidatePath("/dashboard/reminders");
 
     return {
       success: true,
